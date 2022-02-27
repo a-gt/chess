@@ -95,8 +95,8 @@ class Utils {
   }
 
   static getPositionsFromShortCode(shortCode: string): PiecePositions {
-    const positions = Utils.getInitialPiecePositions();
-    const overrides = {};
+    const positions: any = Utils.getInitialPiecePositions();
+    const overrides: any = {};
     const defaultPositionMode = shortCode.charAt(0) === "X";
     if (defaultPositionMode) {
       shortCode = shortCode.slice(1);
@@ -144,11 +144,8 @@ class Utils {
     return positions;
   }
 
-  static getInitialBoardPieces(
-    parent: HTMLElement,
-    pieces: Pieces
-  ): BoardPieces {
-    const boardPieces = {};
+  static getInitialBoardPieces(parent: HTMLElement, pieces: any): BoardPieces {
+    const boardPieces: any = {};
     const container = document.createElement("div");
     container.className = "pieces";
     parent.appendChild(container);
@@ -168,7 +165,16 @@ class Utils {
     parent: HTMLElement,
     handler: (params: Position) => void
   ): BoardTiles {
-    const tiles = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {} };
+    const tiles: any = {
+      1: {},
+      2: {},
+      3: {},
+      4: {},
+      5: {},
+      6: {},
+      7: {},
+      8: {},
+    };
     const board = document.createElement("div");
     board.className = "board";
     parent.appendChild(board);
@@ -376,8 +382,8 @@ class Constraints {
 
   static constraintsKing(args: ConstraintArguments): Options {
     const { piece, kingCastles, piecePositions } = args;
-    const moves = [];
-    const captures = [];
+    const moves: any = [];
+    const captures: any = [];
     const locations = [
       piece.dirN(1, piecePositions),
       piece.dirNE(1, piecePositions),
@@ -392,7 +398,7 @@ class Constraints {
       const castles = kingCastles(piece);
       castles.forEach((position) => moves.push(position));
     }
-    locations.forEach((location) => {
+    locations.forEach((location: any) => {
       const value = Constraints.relationshipToTile(location, args);
       if (value === "BLANK") {
         moves.push(location);
@@ -405,8 +411,8 @@ class Constraints {
 
   static constraintsKnight(args: ConstraintArguments): Options {
     const { piece, piecePositions } = args;
-    const moves = [];
-    const captures = [];
+    const moves: any = [];
+    const captures: any = [];
     const locations = [
       piece.dir(1, 2, piecePositions),
       piece.dir(1, -2, piecePositions),
@@ -417,7 +423,7 @@ class Constraints {
       piece.dir(-2, 1, piecePositions),
       piece.dir(-2, -1, piecePositions),
     ];
-    locations.forEach((location) => {
+    locations.forEach((location: any) => {
       const value = Constraints.relationshipToTile(location, args);
       if (value === "BLANK") {
         moves.push(location);
@@ -443,9 +449,9 @@ class Constraints {
   static constraintsPawn(args: ConstraintArguments): Options {
     const { piece, piecePositions } = args;
     const moves = [];
-    const captures = [];
-    const locationN1 = piece.dirN(1, piecePositions);
-    const locationN2 = piece.dirN(2, piecePositions);
+    const captures: any = [];
+    const locationN1: any = piece.dirN(1, piecePositions);
+    const locationN2: any = piece.dirN(2, piecePositions);
 
     if (Constraints.relationshipToTile(locationN1, args) === "BLANK") {
       moves.push(locationN1);
@@ -460,7 +466,7 @@ class Constraints {
     [
       [piece.dirNW(1, piecePositions), piece.dirW(1, piecePositions)],
       [piece.dirNE(1, piecePositions), piece.dirE(1, piecePositions)],
-    ].forEach(([location, enPassant]) => {
+    ].forEach(([location, enPassant]: any) => {
       const standardCaptureRelationship = Constraints.relationshipToTile(
         location,
         args
@@ -512,9 +518,9 @@ class Constraints {
     if (!location) {
       return undefined;
     }
-    const { state, pieces } = args;
+    const { state, pieces }: any = args;
     const row = state[location.row];
-    const occupyingId = row === undefined ? undefined : row[location.col];
+    const occupyingId: any = row === undefined ? undefined : row[location.col];
     return pieces[occupyingId];
   }
 
@@ -604,11 +610,7 @@ class Piece {
   dirSE(steps: number, positions: PiecePositions): PieceDirResponse {
     return this.dir(-steps, steps, positions);
   }
-  dir(
-    stepsRow: number,
-    stepsColumn: number,
-    positions: PiecePositions
-  ): PieceDirResponse {
+  dir(stepsRow: number, stepsColumn: number, positions: any): PieceDirResponse {
     PIECE_DIR_CALC++;
     const row =
       Utils.rowToInt(positions[this.data.id].row) + this.orientation * stepsRow;
@@ -622,7 +624,7 @@ class Piece {
   }
 
   move(moveIndex: number) {
-    this.moves.push(moveIndex);
+    this.moves.push(moveIndex as never);
   }
 
   options(
@@ -677,24 +679,28 @@ class Board {
   piecesTilesCaptures: PiecesToTiles = {};
   piecesTilesMoves: PiecesToTiles = {};
   tilesPiecesBlackCaptures: TilesToPieces = Utils.getInitialBoardState(
-    () => []
+    () => [] as never
   );
-  tilesPiecesBlackMoves: TilesToPieces = Utils.getInitialBoardState(() => []);
+  tilesPiecesBlackMoves: TilesToPieces = Utils.getInitialBoardState(
+    () => [] as never
+  );
   tilesPiecesWhiteCaptures: TilesToPieces = Utils.getInitialBoardState(
-    () => []
+    () => [] as never
   );
-  tilesPiecesWhiteMoves: TilesToPieces = Utils.getInitialBoardState(() => []);
+  tilesPiecesWhiteMoves: TilesToPieces = Utils.getInitialBoardState(
+    () => [] as never
+  );
 
   pieceIdsBlack: PieceIdBlack[] = [];
   pieceIdsWhite: PieceIdWhite[] = [];
-  piecePositions: PiecePositions;
-  pieces: Pieces;
-  state: BoardState = Utils.getInitialBoardState() as BoardState;
+  piecePositions: any;
+  pieces: any;
+  state: any = Utils.getInitialBoardState() as any;
 
   static COLS: PositionColumn[] = ["A", "B", "C", "D", "E", "F", "G", "H"];
   static ROWS: PositionRow[] = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-  constructor(pieces: Pieces, piecePositions: PiecePositions) {
+  constructor(pieces: any, piecePositions: PiecePositions) {
     this.pieces = pieces;
     for (let id in pieces) {
       if (pieces[id].playerWhite()) {
@@ -731,7 +737,7 @@ class Board {
   }
 
   kingCastles(king: Piece): Position[] {
-    const castles = [];
+    const castles: any = [];
     // king has to not have moved
     if (king.moves.length) {
       return castles;
@@ -779,13 +785,13 @@ class Board {
 
   kingCheckStates(
     kingPosition: PiecePosition,
-    captures: TilesToPieces,
-    piecePositions: PiecePositions
+    captures: any,
+    piecePositions: any
   ): PiecePosition[] {
-    const { col, row } = kingPosition;
+    const { col, row }: any = kingPosition;
     return captures[row][col]
-      .map((id) => piecePositions[id])
-      .filter((pos) => pos.active);
+      .map((id: any) => piecePositions[id])
+      .filter((pos: any) => pos.active);
   }
 
   pieceCalculateMoves(
@@ -795,8 +801,8 @@ class Board {
     piecePositions: PiecePositions,
     piecesTilesCaptures: PiecesToTiles,
     piecesTilesMoves: PiecesToTiles,
-    tilesPiecesCaptures: TilesToPieces,
-    tilesPiecesMoves: TilesToPieces,
+    tilesPiecesCaptures: any,
+    tilesPiecesMoves: any,
     resultingChecks?: (args: ResultingChecksArguments) => PiecePosition[],
     kingCastles?: (king: Piece) => Position[]
   ) {
@@ -810,10 +816,12 @@ class Board {
     );
     piecesTilesCaptures[pieceId] = Array.from(captures);
     piecesTilesMoves[pieceId] = Array.from(moves);
-    captures.forEach(({ col, row }) =>
+    captures.forEach(({ col, row }: any) =>
       tilesPiecesCaptures[row][col].push(pieceId)
     );
-    moves.forEach(({ col, row }) => tilesPiecesMoves[row][col].push(pieceId));
+    moves.forEach(({ col, row }: any) =>
+      tilesPiecesMoves[row][col].push(pieceId)
+    );
   }
 
   pieceCapture(piece: Piece) {
@@ -841,10 +849,10 @@ class Board {
   }
 
   piecesUpdate(moveIndex: number) {
-    this.tilesPiecesBlackCaptures = Utils.getInitialBoardState(() => []);
-    this.tilesPiecesBlackMoves = Utils.getInitialBoardState(() => []);
-    this.tilesPiecesWhiteCaptures = Utils.getInitialBoardState(() => []);
-    this.tilesPiecesWhiteMoves = Utils.getInitialBoardState(() => []);
+    this.tilesPiecesBlackCaptures = Utils.getInitialBoardState(() => []as never);
+    this.tilesPiecesBlackMoves = Utils.getInitialBoardState(() => [] as never);
+    this.tilesPiecesWhiteCaptures = Utils.getInitialBoardState(() => [] as never);
+    this.tilesPiecesWhiteMoves = Utils.getInitialBoardState(() => [] as never);
 
     this.pieceIdsBlack.forEach((id) =>
       this.pieceCalculateMoves(
@@ -893,8 +901,8 @@ class Board {
     capture,
     moveIndex,
   }: ResultingChecksArguments) {
-    const tilesPiecesCaptures = Utils.getInitialBoardState(() => []);
-    const tilesPiecesMoves = Utils.getInitialBoardState(() => []);
+    const tilesPiecesCaptures = Utils.getInitialBoardState(() => [] as never);
+    const tilesPiecesMoves = Utils.getInitialBoardState(() => [] as never);
     const piecesTilesCaptures = {};
     const piecesTilesMoves = {};
     const state = JSON.parse(JSON.stringify(this.state));
@@ -992,7 +1000,7 @@ class Game {
   activePieceOptions: Position[] = [];
   board: Board;
   moveIndex = 0;
-  moves = [];
+  moves: any = [];
   turn: PlayerId;
 
   constructor(
@@ -1056,8 +1064,8 @@ class Game {
     // no piece selected or new CANCEL + TOUCH
     if (tilePiece) {
       const tilePieceId = tilePiece.data.id;
-      const moves = this.board.piecesTilesMoves[tilePieceId];
-      const captures = this.board.piecesTilesCaptures[tilePieceId];
+      const moves: any = this.board.piecesTilesMoves[tilePieceId];
+      const captures: any = this.board.piecesTilesCaptures[tilePieceId];
       if (!moves.length && !captures.length) {
         return { type: "INVALID" };
       }
@@ -1166,8 +1174,8 @@ class Game {
 class View {
   element: HTMLElement;
   game: Game;
-  pieces: BoardPieces;
-  tiles: BoardTiles;
+  pieces: any;
+  tiles: any;
 
   constructor(element: HTMLElement, game: Game, perspective?: PlayerId) {
     this.element = element;
@@ -1213,13 +1221,13 @@ class View {
       this.element.classList.remove("touching");
     }
 
-    const key = (row, col) => `${row}-${col}`;
+    const key = (row: any, col: any) => `${row}-${col}`;
     const moveKeys = moves.map(({ row, col }) => key(row, col));
     this.game.board.tileEach(
       ({ row, col }, piece, pieceMoves, pieceCaptures) => {
         const tileElement = this.tiles[row][col];
         const move = moveKeys.includes(key(row, col)) ? moveInner : "";
-        const format = (id, className) => this.game.board.pieces[id].shape();
+        const format = (id: any, className: any) => this.game.board.pieces[id].shape();
         tileElement.innerHTML = `
           <div class="move">${move}</div>
           <div class="moves">
@@ -1272,7 +1280,7 @@ class View {
     moves?.forEach(({ row, col }) => {
       this.tiles[row][col].classList.add("highlight-move");
       this.pieces[
-        this.game.board.tileFind({ row, col })?.data.id
+        this.game.board.tileFind({ row, col })?.data.id as any
       ]?.classList.add("highlight-move");
     });
     captures?.forEach(({ row, col, capture }) => {
@@ -1282,7 +1290,7 @@ class View {
       }
       this.tiles[row][col].classList.add("highlight-capture");
       this.pieces[
-        this.game.board.tileFind({ row, col })?.data.id
+        this.game.board.tileFind({ row, col })?.data.id as any
       ]?.classList.add("highlight-capture");
     });
   }
@@ -1306,11 +1314,11 @@ class View {
       moves = [],
       captures = [],
       type,
-    } = this.game.activate(location);
+    }: any = this.game.activate(location);
 
     this.drawResetClassNames();
     if (type === "TOUCH") {
-      const enPassant = captures.find((capture) => !!capture.capture);
+      const enPassant = captures.find((capture: any) => !!capture.capture);
       const passingMoves = enPassant ? moves.concat([enPassant]) : moves;
       this.drawPiecePositions(
         passingMoves,
@@ -1394,7 +1402,7 @@ const initialPositions = Utils.getInitialPiecePositions();
 const initialTurn = "WHITE";
 const perspective = "WHITE";
 const game = new Game(Utils.getInitialPieces(), initialPositions, initialTurn);
-const view = new View(document.getElementById("board"), game, perspective);
+const view = new View(document.getElementById("board") as any, game, perspective);
 const control = new Control(game, view);
 
 export default null;
