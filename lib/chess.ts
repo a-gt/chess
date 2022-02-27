@@ -1396,3 +1396,5 @@ const perspective = "WHITE";
 const game = new Game(Utils.getInitialPieces(), initialPositions, initialTurn);
 const view = new View(document.getElementById("board"), game, perspective);
 const control = new Control(game, view);
+
+export default null;
